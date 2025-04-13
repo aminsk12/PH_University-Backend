@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-this-alias */
+
 import { Schema, model } from 'mongoose';
 import { TGuardian, TLocalGuardian, TStudent, TStudentName } from './student.interface';
-import bcrypt from "bcrypt";
-import config from '../../config';
+
 
 const studentNameSchema = new Schema<TStudentName>({
     firstName: {
@@ -70,10 +69,11 @@ const studentSchema = new Schema<TStudent>(
             required: [true, 'Student ID is required'],
             unique: true,
         },
-        password: {
-            type: String,
-            required: [true, ' password is required'],
+        user: {
+            type: Schema.Types.ObjectId,
+            required: [true, 'User id is required'],
             unique: true,
+            ref:"User"
         },
         name: {
             type: studentNameSchema,
@@ -125,15 +125,10 @@ const studentSchema = new Schema<TStudent>(
             required: [true, 'Local guardian information is required'],
         },
         profileImage: { type: String },
-        status: {
-            type: String,
-            enum: {
-                values: ['Activ', 'Bolcked'], // kept original values as per your need
-                message: '{VALUE} is not a valid status',
-            },
-            default: 'Activ',
-            required: [true, 'Status is required'],
-        },
+        isDeleted: {
+            type: Boolean,
+            default: false
+        }
     },
     {
         timestamps: true,
@@ -141,20 +136,6 @@ const studentSchema = new Schema<TStudent>(
 );
 
 
-studentSchema.pre('save', async function (next) {
-    
-    const user = this
-    user.password = await bcrypt.hash(user.password, Number(config.bcrypt_salt_round),);
-    next()
-});
-
-
-
-
-studentSchema.post('save', function (doc,next) {
-    doc.password ='';
-    next()
-})
 
 
 const Student = model<TStudent>('Student', studentSchema);
