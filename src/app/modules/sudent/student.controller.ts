@@ -1,50 +1,39 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { StudentServices } from "./student.service";
+import sendResponse from "../../utils/sendResponse";
 
 
 
-const getAllStudent = async (req: Request, res: Response) => {
+const getAllStudent = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const data = await StudentServices.getAllStudentFromDB()
-
-    res.status(200).json({
+    sendResponse(res, {
+      statusCode: 200,
       success: true,
       message: "Student are retrived succesfuly",
       data: data
     })
-  } catch (err: any) {
-    console.error("Error creating student:", err.message);
-
-    res.status(500).json({
-      success: false,
-      message: "Failed to create student",
-      error: err.message,
-    });
+  } catch (err) {
+    next(err)
   }
 };
 
 
-const getSingleStudent = async (req: Request, res: Response) => {
+const getSingleStudent = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const { studentId } = req.params
     const data = await StudentServices.getSingleStudentFromDB(studentId)
 
-    res.status(200).json({
+    sendResponse(res, {
+      statusCode: 200,
       success: true,
       message: "Student is retrived succesfuly",
       data: data
     })
-  } catch (err: any) {
-    console.error("Error creating student:", err.message);
-
-    res.status(500).json({
-      success: false,
-      message: "Failed to create student",
-      error: err.message,
-    });
+  } catch (err) {
+    next(err)
   }
 };
 

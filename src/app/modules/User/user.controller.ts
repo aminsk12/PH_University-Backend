@@ -1,29 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { UserServices } from "./user.service";
+import sendResponse from "../../utils/sendResponse";
 
-const createStudent = async (req: Request, res: Response) => {
+const createStudent = async (req: Request, res: Response,next: NextFunction) => {
 
     try {
 
         const { password, student } = req.body;
-        //const zodParsedData = studentValidationSchema.parse(student)
-
-        const data = await UserServices.createStudenIntoDB(password, student)
-
-        res.status(200).json({
+        const result = await UserServices.createStudenIntoDB(password, student)
+        sendResponse(res, {
+            statusCode: 200,
             success: true,
             message: "Student created succesfuly",
-            data: data
+            data: result
         })
-    } catch (err: any) {
-        console.error("Error creating student:", err.message);
-
-        res.status(500).json({
-            success: false,
-            message: "Failed to create student",
-            error: err.message,
-        });
+    } catch (err) {
+        next(err)
     }
 };
 
