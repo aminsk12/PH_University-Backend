@@ -8,7 +8,7 @@ const months: TMonths[] = ['January', 'February', 'March', 'April', 'May', 'June
 const academicSemisterSchema = new Schema<TAcademicSemister>({
     name: {
         type: String,
-        enum: ["Autam", "Summer", "Fall"],
+        enum: ["Autumn", "Summer", "Fall"],
         required: true,
     },
     code: {
@@ -37,6 +37,18 @@ const academicSemisterSchema = new Schema<TAcademicSemister>({
 
     }
 )
+
+academicSemisterSchema.pre('save', async function(next){
+    const isSemisterExit = await AcademicSemister.findOne({
+        year: this.year,
+        name: this.name,
+    })
+
+    if (isSemisterExit) {
+        throw new Error("Academic Semister already exists")
+    }
+    next()
+})
 
 
 

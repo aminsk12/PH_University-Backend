@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {Request,Response,NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
+import config from '../config';
 
 const globalErrorHandler = (
     err: any,
@@ -15,7 +16,7 @@ const globalErrorHandler = (
     res.status(statusCode).json({
         success: false,
         message,
-        stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+        stack: config.NODE_ENV === 'production' ? err.stack : null,
     });
 };
 

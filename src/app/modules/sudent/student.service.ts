@@ -3,7 +3,7 @@ import Student from "./student.modal"
 
 const getAllStudentFromDB = async () => {
     const result = await Student.find( )
-    console.log(result);
+    //console.log(result);
     return result
 }
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const createAcademicScemisterValidation = z.object({
     body: z.object({
-        name: z.enum(["Autam", "Summer", "Fall"], {
+        name: z.enum(["Autumn", "Summer", "Fall"], {
             required_error: "Name is required",
             invalid_type_error: "Name must be one of the following: Autam, Summer, Fall"
         }),
