@@ -24,7 +24,6 @@ const localGuardianValidationSchema = z.object({
 
 const createStudentValidationSchema = z.object({
     body: z.object({
-        password: z.string(),
         student: z.object({
             name: studentNameValidationSchema,
             gender: z.enum(['male', 'female', 'other']),
