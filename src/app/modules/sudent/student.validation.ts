@@ -22,23 +22,27 @@ const localGuardianValidationSchema = z.object({
     address: z.string(),
 });
 
-const studentValidationSchema = z.object({
-    id: z.string(),
-    password: z.string(),
-    name: studentNameValidationSchema,
-    gender: z.enum(['male', 'female', 'other']),
-    email: z.string().email('Invalid email format'),
-    dateOfBirth: z.string(),
-    contactNo: z.string(),
-    emergencyContactNo: z.string(),
-    bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
-    presentAddress: z.string(),
-    permanentAddress: z.string(),
-    guardian: guardianValidationSchema,
-    localGuardian: localGuardianValidationSchema,
-    profileImage: z.string().optional(),
-    status: z.enum(['Activ', 'Bolcked']).default('Activ'),
-});
+const createStudentValidationSchema = z.object({
+    body: z.object({
+        password: z.string(),
+        student: z.object({
+            name: studentNameValidationSchema,
+            gender: z.enum(['male', 'female', 'other']),
+            email: z.string().email('Invalid email format'),
+            dateOfBirth: z.string(),
+            contactNo: z.string(),
+            emergencyContactNo: z.string(),
+            bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
+            presentAddress: z.string(),
+            permanentAddress: z.string(),
+            guardian: guardianValidationSchema,
+            localGuardian: localGuardianValidationSchema,
+            profileImage: z.string().optional(),
+        })
+    })
+})
 
 
-export default studentValidationSchema
+export const studentValidations = {
+    createStudentValidationSchema
+}
