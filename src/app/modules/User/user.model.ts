@@ -6,7 +6,8 @@ import config from "../../config";
 const userSchema = new Schema<TUser>({
     id: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
     },
     password: {
         type: String,
@@ -15,7 +16,7 @@ const userSchema = new Schema<TUser>({
     email: {
         type: String,
         required: true,
-        unique:true
+        unique: true
     },
     needsPasswordChange: {
         type: Boolean,
@@ -28,7 +29,7 @@ const userSchema = new Schema<TUser>({
     status: {
         type: String,
         enum: ["Activ", "Bolcked"],
-        default:"Activ"
+        default: "Activ"
     },
     isDeleted: {
         type: Boolean,
@@ -47,8 +48,8 @@ userSchema.pre('save', async function (next) {
 });
 
 
-userSchema.post('save', function (doc,next) {
-    doc.password ='';
+userSchema.post('save', function (doc, next) {
+    doc.password = '';
     next()
 })
 
