@@ -7,7 +7,19 @@ const createAcademicFacultyInToDB = async (paylod: TAcademicFaculty) => {
 }
 
 
+const getAllAcademicFacultyFrom = async () => {
+    const result = await AcademicFaculty.find();
+    return result;
+}
+
+const getSingleAcademicFacultyFrom = async (id:string) => {
+    const result = await AcademicFaculty.findById(id);
+    return result;
+}
+
 
 export const AcademicFacultyService = {
-    createAcademicFacultyInToDB
+    createAcademicFacultyInToDB,
+    getAllAcademicFacultyFrom,
+    getSingleAcademicFacultyFrom
 }

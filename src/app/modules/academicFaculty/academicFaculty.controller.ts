@@ -13,7 +13,33 @@ const createAcademicFacultyIntoDB = catchAsync(async (req, res) => {
     })
 })
 
+const getAllAcademicFaculty = catchAsync(async (req, res) => {
+    const result = await AcademicFacultyService.getAllAcademicFacultyFrom()
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Academic Faculty are retrived successfully",
+        data: result,
+    })
+})
+
+
+const getSingleAcademicFaculty = catchAsync(async (req, res) => {
+    const { academicFacultyId } = req.params;
+    const result = await AcademicFacultyService.getSingleAcademicFacultyFrom(academicFacultyId);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Academic Faculty  is retrived successfully",
+        data: result,
+    })
+})
+
 
 export const AcademicFacultyController = {
-    createAcademicFacultyIntoDB
+    createAcademicFacultyIntoDB,
+    getSingleAcademicFaculty,
+    getAllAcademicFaculty
 }
