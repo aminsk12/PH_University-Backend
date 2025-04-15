@@ -73,7 +73,7 @@ const studentSchema = new Schema<TStudent>(
             type: Schema.Types.ObjectId,
             required: [true, 'User id is required'],
             unique: true,
-            ref:"User"
+            ref: "User"
         },
         name: {
             type: studentNameSchema,
@@ -124,6 +124,11 @@ const studentSchema = new Schema<TStudent>(
             type: LocalGuardianSchema,
             required: [true, 'Local guardian information is required'],
         },
+        admissionSemester:{
+            type: Schema.Types.ObjectId,
+            requird:[true, 'Admission Semester is requird'],
+            ref:"AcademicSemister"
+        },
         profileImage: { type: String },
         isDeleted: {
             type: Boolean,
@@ -134,6 +139,29 @@ const studentSchema = new Schema<TStudent>(
         timestamps: true,
     }
 );
+
+
+studentSchema.pre('save', async function (next) {
+    const isStudentExist = await Student.findOne({
+        id: this.id,
+    });
+
+    if (isStudentExist) {
+        throw new Error('Student ID already exists');
+    }
+    next();
+}
+);
+
+studentSchema.pre('find', function (next) {
+    this.where({ isDeleted: false });
+    next();
+});
+studentSchema.pre('findOne', function (next) {
+    this.where({ isDeleted: false });
+    next();
+})
+
 
 
 

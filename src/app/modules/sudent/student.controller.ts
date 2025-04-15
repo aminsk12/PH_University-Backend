@@ -29,6 +29,8 @@ const getSingleStudent = catchAsync(async (req, res) => {
 })
 
 
+
+
 export const StudentController = {
   getAllStudent,
   getSingleStudent

@@ -1,8 +1,11 @@
 import config from "../../config"
+import { TAcademicSemister } from "../academicSemister/academicSemister.interface"
+import { AcademicSemister } from "../academicSemister/academicsemister.model"
 import { TStudent } from "../sudent/student.interface"
 import Student from "../sudent/student.modal"
 import { TUser } from "./user.interface"
 import { User } from "./user.model"
+import generateStudentId from "./user.ultis"
 
 
 const createStudenIntoDB = async (password: string, studentData: TStudent) => {
@@ -19,8 +22,11 @@ const createStudenIntoDB = async (password: string, studentData: TStudent) => {
 
     //set student role
     userData.role = "student"
+
+    const admissionSemester = await AcademicSemister.findById(studentData.admissionSemester)
+
     //set manually generated ID
-    userData.id = "2030100001"
+    userData.id = generateStudentId(admissionSemester as TAcademicSemister)
     // set email 
     userData.email = studentData.email
 

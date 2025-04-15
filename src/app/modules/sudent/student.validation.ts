@@ -1,4 +1,5 @@
-import { z } from 'zod';
+import { z } from "zod";
+
 
 const studentNameValidationSchema = z.object({
     firstName: z.string().max(20, 'First name cannot be more than 20 characters'),
@@ -36,6 +37,7 @@ const createStudentValidationSchema = z.object({
             permanentAddress: z.string(),
             guardian: guardianValidationSchema,
             localGuardian: localGuardianValidationSchema,
+            admissionSemester: z.string(),
             profileImage: z.string().optional(),
         })
     })
