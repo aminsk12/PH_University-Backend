@@ -124,10 +124,10 @@ const studentSchema = new Schema<TStudent>(
             type: LocalGuardianSchema,
             required: [true, 'Local guardian information is required'],
         },
-        admissionSemester:{
+        admissionSemester: {
             type: Schema.Types.ObjectId,
-            requird:[true, 'Admission Semester is requird'],
-            ref:"AcademicSemister"
+            requird: [true, 'Admission Semester is requird'],
+            ref: "AcademicSemister"
         },
         profileImage: { type: String },
         isDeleted: {
@@ -161,9 +161,6 @@ studentSchema.pre('findOne', function (next) {
     this.where({ isDeleted: false });
     next();
 })
-
-
-
 
 
 const Student = model<TStudent>('Student', studentSchema);

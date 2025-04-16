@@ -2,7 +2,7 @@
 import Student from "./student.modal"
 
 const getAllStudentFromDB = async () => {
-    const result = await Student.find( )
+    const result = await Student.find( ).populate('admissionSemester')
     //console.log(result);
     return result
 }
@@ -12,6 +12,8 @@ const getSingleStudentFromDB = async (id: string) => {
     console.log(result);
     return result
 }
+
+
 
 export const StudentServices = {
     getAllStudentFromDB,
