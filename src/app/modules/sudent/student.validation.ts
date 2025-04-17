@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 
+
 const studentNameValidationSchema = z.object({
     firstName: z.string().max(20, 'First name cannot be more than 20 characters'),
     middleName: z.string().optional(),
@@ -38,6 +39,9 @@ const createStudentValidationSchema = z.object({
             guardian: guardianValidationSchema,
             localGuardian: localGuardianValidationSchema,
             admissionSemester: z.string(),
+            academicDepartment: z.string({
+                required_error: 'Academic department is required',
+            }),
             profileImage: z.string().optional(),
         })
     })

@@ -1,6 +1,7 @@
 import { TAcademicSemister } from "../academicSemister/academicSemister.interface";
 import { User } from "./user.model";
 
+ 
 
 const findLastStudentId = async () => {
     const lastStudent = await User.findOne(
@@ -16,7 +17,7 @@ const findLastStudentId = async () => {
         .sort({ createdAt: -1 })
         .lean()
 
-    return lastStudent?.id ? lastStudent.id : undefined
+    return lastStudent?.id ? lastStudent.id : "0000"
 }
 
 
@@ -31,8 +32,8 @@ const generateStudentId = async (paylod: TAcademicSemister) => {
     const currentSemesterCode = paylod.code
     const currentYear = paylod.year
 
-    if(lastStudentId && lastStudentSemesterCode !== currentSemesterCode && lastStudentYear !== currentYear){
-        curreId=lastStudentId.substring(6)
+    if (lastStudentId && lastStudentSemesterCode !== currentSemesterCode && lastStudentYear !== currentYear) {
+        curreId = lastStudentId.substring(6)
     }
 
     let incrementId = (Number(curreId) + 1).toString().padStart(4, '0')
@@ -45,3 +46,8 @@ const generateStudentId = async (paylod: TAcademicSemister) => {
 
 
 export default generateStudentId
+
+
+
+
+
