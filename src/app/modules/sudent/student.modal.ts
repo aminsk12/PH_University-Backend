@@ -124,10 +124,10 @@ const studentSchema = new Schema<TStudent>(
             type: LocalGuardianSchema,
             required: [true, 'Local guardian information is required'],
         },
-        academicDepartment:{
-            type:Schema.Types.ObjectId,
-            requird:true,
-            ref:"AcademicDepartment"
+        academicDepartment: {
+            type: Schema.Types.ObjectId,
+            requird: true,
+            ref: "AcademicDepartment"
         },
         admissionSemester: {
             type: Schema.Types.ObjectId,
@@ -146,6 +146,8 @@ const studentSchema = new Schema<TStudent>(
 );
 
 
+
+
 studentSchema.pre('save', async function (next) {
     const isStudentExist = await Student.findOne({
         id: this.id,
@@ -157,6 +159,8 @@ studentSchema.pre('save', async function (next) {
     next();
 }
 );
+
+
 
 
 const Student = model<TStudent>('Student', studentSchema);

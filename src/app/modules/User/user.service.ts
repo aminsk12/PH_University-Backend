@@ -1,4 +1,3 @@
-
 import config from "../../config"
 import { TAcademicSemister } from "../academicSemister/academicSemister.interface"
 import { AcademicSemister } from "../academicSemister/academicsemister.model"
@@ -9,7 +8,7 @@ import { User } from "./user.model"
 import generateStudentId from "./user.ultis"
 import AppError from "../../errors/AppError"
 import mongoose from "mongoose"
-
+          
 
 const createStudenIntoDB = async (password: string, studentData: TStudent) => {
     //create a user obj
@@ -69,8 +68,6 @@ const createStudenIntoDB = async (password: string, studentData: TStudent) => {
         if (err instanceof mongoose.Error) {
             throw new AppError(400, 'Database error: ' + err.message)
         }
-    }finally {
-        session.endSession();
     }
     
 }
