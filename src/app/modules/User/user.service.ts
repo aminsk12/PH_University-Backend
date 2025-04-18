@@ -40,7 +40,7 @@ const createStudenIntoDB = async (password: string, studentData: TStudent) => {
 
         //create a user 
         const newUser = await User.create([userData], { session });
-
+//console.log(newUser);
         //create a student
         if (!newUser.length) {
             throw new AppError(400, 'Faild to create user')
@@ -69,9 +69,10 @@ const createStudenIntoDB = async (password: string, studentData: TStudent) => {
         if (err instanceof mongoose.Error) {
             throw new AppError(400, 'Database error: ' + err.message)
         }
-       
-        
+    }finally {
+        session.endSession();
     }
+    
 }
 
 

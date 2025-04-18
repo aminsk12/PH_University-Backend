@@ -32,7 +32,11 @@ const generateStudentId = async (paylod: TAcademicSemister) => {
     const currentSemesterCode = paylod.code
     const currentYear = paylod.year
 
-    if (lastStudentId && lastStudentSemesterCode !== currentSemesterCode && lastStudentYear !== currentYear) {
+    // if (lastStudentId && lastStudentSemesterCode !== currentSemesterCode && lastStudentYear !== currentYear) {
+    //     curreId = lastStudentId.substring(6)
+    // }
+
+    if (lastStudentId && lastStudentSemesterCode === currentSemesterCode && lastStudentYear === currentYear) {
         curreId = lastStudentId.substring(6)
     }
 
