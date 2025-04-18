@@ -158,15 +158,6 @@ studentSchema.pre('save', async function (next) {
 }
 );
 
-studentSchema.pre('find', function (next) {
-    this.where({ isDeleted: false });
-    next();
-});
-studentSchema.pre('findOne', function (next) {
-    this.where({ isDeleted: false });
-    next();
-})
-
 
 const Student = model<TStudent>('Student', studentSchema);
 
