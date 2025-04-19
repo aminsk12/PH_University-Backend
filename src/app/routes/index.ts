@@ -11,30 +11,30 @@ const router = Router();
 
 const moduleRoutes = [
     {
-        payth: "/student",
+        path: "/student",
         route: studenRoute
     },
     {
-        payth: "/users",
+        path: "/users",
         route: UserRoutes
     },
     {
-        payth: "/academic-semester",
+        path: "/academic-semester",
         route: AcademicSemesterRoutes
     },
     {
-        payth: "/academic-faculty",
+        path: "/academic-faculty",
         route: AcademicFacultyRoutes
     },
     {
-        payth: "/academic-department",
+        path: "/academic-department",
         route: AcademicDepartmentRoutes
     },
 ];
 
 
 moduleRoutes.forEach(route => {
-    router.use(route.payth, route.route)
+    router.use(route.path, route.route)
 })
 
 export default router;

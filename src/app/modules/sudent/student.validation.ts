@@ -2,13 +2,13 @@ import { z } from "zod";
 
 
 
-const studentNameValidationSchema = z.object({
+const createStudentNameValidationSchema = z.object({
     firstName: z.string().max(20, 'First name cannot be more than 20 characters'),
     middleName: z.string().optional(),
     lastName: z.string(),
 });
 
-const guardianValidationSchema = z.object({
+const createGuardianValidationSchema = z.object({
     fatherName: z.string(),
     fatherOccupation: z.string(),
     fatherContactNo: z.string(),
@@ -17,7 +17,7 @@ const guardianValidationSchema = z.object({
     motherContactNo: z.string(),
 });
 
-const localGuardianValidationSchema = z.object({
+const createLocalGuardianValidationSchema = z.object({
     name: z.string(),
     occupation: z.string(),
     contactNo: z.string(),
@@ -27,7 +27,7 @@ const localGuardianValidationSchema = z.object({
 const createStudentValidationSchema = z.object({
     body: z.object({
         student: z.object({
-            name: studentNameValidationSchema,
+            name: createStudentNameValidationSchema,
             gender: z.enum(['male', 'female', 'other']),
             email: z.string().email('Invalid email format'),
             dateOfBirth: z.string(),
@@ -36,8 +36,8 @@ const createStudentValidationSchema = z.object({
             bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
             presentAddress: z.string(),
             permanentAddress: z.string(),
-            guardian: guardianValidationSchema,
-            localGuardian: localGuardianValidationSchema,
+            guardian: createGuardianValidationSchema,
+            localGuardian: createLocalGuardianValidationSchema,
             admissionSemester: z.string(),
             academicDepartment: z.string({
                 required_error: 'Academic department is required',
@@ -47,7 +47,51 @@ const createStudentValidationSchema = z.object({
     })
 })
 
+const updateStudentNameValidationSchema = z.object({
+    firstName: z.string().max(20, 'First name cannot be more than 20 characters').optional(),
+    middleName: z.string().optional(),
+    lastName: z.string().optional(),
+});
+
+const updateGuardianValidationSchema = z.object({
+    fatherName: z.string().optional(),
+    fatherOccupation: z.string().optional(),
+    fatherContactNo: z.string().optional(),
+    motherName: z.string().optional(),
+    motherOccupation: z.string().optional(),
+    motherContactNo: z.string().optional(),
+});
+
+const updateLocalGuardianValidationSchema = z.object({
+    name: z.string().optional(),
+    occupation: z.string().optional(),
+    contactNo: z.string().optional(),
+    address: z.string().optional(),
+});
+
+const updateStudentValidationSchema = z.object({
+    body: z.object({
+        student: z.object({
+            name: updateStudentNameValidationSchema.optional(),
+            gender: z.enum(['male', 'female', 'other']).optional(),
+            email: z.string().email('Invalid email format').optional(),
+            dateOfBirth: z.string().optional(),
+            contactNo: z.string().optional(),
+            emergencyContactNo: z.string().optional(),
+            bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']).optional(),
+            presentAddress: z.string().optional(),
+            permanentAddress: z.string().optional(),
+            guardian: updateGuardianValidationSchema.optional(),
+            localGuardian: updateLocalGuardianValidationSchema.optional(),
+            admissionSemester: z.string().optional(),
+            academicDepartment: z.string().optional(),
+            profileImage: z.string().optional(),
+        }).partial() // Alternatively, apply `.partial()` at this level to make all fields optional
+    })
+});
+
 
 export const studentValidations = {
-    createStudentValidationSchema
+    createStudentValidationSchema,
+    updateStudentValidationSchema
 }

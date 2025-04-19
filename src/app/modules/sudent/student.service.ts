@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 import Student from "./student.modal"
 import AppError from "../../errors/AppError"
 import { User } from "../User/user.model"
+import { TStudent } from "./student.interface"
 
 const getAllStudentFromDB = async () => {
     const result = await Student.find().populate('admissionSemester').populate({
@@ -67,10 +68,23 @@ const deleteStudentFromDB = async (id: string) => {
 
 }
 
+const updateStudentFromDB = async (id: string, paylod: Partial<TStudent>) => {
+
+    const updateStudent = await Student.findOneAndUpdate(
+        { id },
+        paylod,
+        { new: true }
+    )
+    
+    return updateStudent
+
+}
+
 
 
 export const StudentServices = {
     getAllStudentFromDB,
     getSingleStudentFromDB,
-    deleteStudentFromDB
+    deleteStudentFromDB,
+    updateStudentFromDB
 }
