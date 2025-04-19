@@ -70,10 +70,34 @@ const deleteStudentFromDB = async (id: string) => {
 
 const updateStudentFromDB = async (id: string, paylod: Partial<TStudent>) => {
 
+
+    const {name, guardian, localGuardian, ...remaning} = paylod
+
+    const modifiedUpdatedData: Record<string, unknown>={
+        ...remaning
+    }
+
+
+    if(name&& Object.keys(name).length){
+        for(const [key, value] of Object.entries(name)){
+            modifiedUpdatedData[`name.${key}`] = value
+        }
+    }
+    if(guardian&& Object.keys(guardian).length){
+        for(const [key, value] of Object.entries(guardian)){
+            modifiedUpdatedData[`guardian.${key}`] = value
+        }
+    }
+    if(localGuardian&& Object.keys(localGuardian).length){
+        for(const [key, value] of Object.entries(localGuardian)){
+            modifiedUpdatedData[`localGuardian.${key}`] = value
+        }
+    }
+
     const updateStudent = await Student.findOneAndUpdate(
         { id },
-        paylod,
-        { new: true }
+        modifiedUpdatedData,
+        { new: true , runValidators: true}
     )
     
     return updateStudent

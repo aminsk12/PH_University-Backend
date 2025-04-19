@@ -43,7 +43,7 @@ const deleteStudent = catchAsync(async (req, res) => {
 
 const updateStudent = catchAsync(async (req, res) => {
   const { studentId } = req.params
-const {student} = req.body
+  const { student } = req.body
 
   const data = await StudentServices.updateStudentFromDB(studentId, student)
 
@@ -63,3 +63,6 @@ export const StudentController = {
   deleteStudent,
   updateStudent
 }
+
+
+
