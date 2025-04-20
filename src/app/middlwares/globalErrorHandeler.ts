@@ -1,14 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Request, Response, NextFunction } from 'express';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+import { ErrorRequestHandler } from 'express';
 import config from '../config';
 
-const globalErrorHandler = (
-    err: any,
-    req: Request,
-    res: Response,
-    next: NextFunction
+const globalErrorHandler:ErrorRequestHandler = (
+    err,
+    req,
+    res,
+    next
 ) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';
@@ -16,7 +16,8 @@ const globalErrorHandler = (
     res.status(statusCode).json({
         success: false,
         message,
-        stack: config.NODE_ENV === 'production' ? err.stack : null,
+        error:err,
+        stack: config.NODE_ENV === 'devlopment' ? err.stack : null,
     });
 };
 

@@ -8,7 +8,9 @@ import { User } from "./user.model"
 import generateStudentId from "./user.ultis"
 import AppError from "../../errors/AppError"
 import mongoose from "mongoose"
-          
+import { TFaculty } from "../faculty/faculty.interface"
+import { Faculty } from "../faculty/faculty.model"
+
 
 const createStudenIntoDB = async (password: string, studentData: TStudent) => {
     //create a user obj
@@ -16,11 +18,6 @@ const createStudenIntoDB = async (password: string, studentData: TStudent) => {
 
     // if password is not given, use default password
     userData.password = password || (config.default_pass as string)
-    // if (!password) {
-    //     user.password = config.default_pass as string;
-    // }else{
-    //     user.password= password
-    // }
 
     //set student role
     userData.role = "student"
@@ -39,7 +36,7 @@ const createStudenIntoDB = async (password: string, studentData: TStudent) => {
 
         //create a user 
         const newUser = await User.create([userData], { session });
-//console.log(newUser);
+        //console.log(newUser);
         //create a student
         if (!newUser.length) {
             throw new AppError(400, 'Faild to create user')
@@ -53,11 +50,11 @@ const createStudenIntoDB = async (password: string, studentData: TStudent) => {
         if (!newStudent.length) {
             throw new AppError(400, 'Faild to create student')
         }
-        
+
         // commit the transaction
         await session.commitTransaction();
         session.endSession();
-        
+
         return newStudent
 
     } catch (err) {
@@ -69,10 +66,34 @@ const createStudenIntoDB = async (password: string, studentData: TStudent) => {
             throw new AppError(400, 'Database error: ' + err.message)
         }
     }
-    
+
+}
+
+
+const createFacultyIntuDB = async (password: string, facultyData: TFaculty) => {
+
+    const userData: Partial<TUser> = {}
+
+    userData.password = password || (config.default_pass as string);
+    userData.role = "faculty"
+    userData.email = facultyData.email;
+    userData.id = 'F-0001'
+
+    const newUser = await User.create(userData);
+    if (Object.keys(newUser).length) {
+
+        facultyData.id = newUser.id;
+        facultyData.user = newUser._id
+
+        const newFaculty = await Faculty.create(facultyData)
+        return newFaculty
+    }
+
+
 }
 
 
 export const UserServices = {
-    createStudenIntoDB
+    createStudenIntoDB,
+    createFacultyIntuDB
 }

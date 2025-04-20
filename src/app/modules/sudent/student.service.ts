@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose"
 import Student from "./student.modal"
 import AppError from "../../errors/AppError"
@@ -71,25 +70,25 @@ const deleteStudentFromDB = async (id: string) => {
 const updateStudentFromDB = async (id: string, paylod: Partial<TStudent>) => {
 
 
-    const {name, guardian, localGuardian, ...remaning} = paylod
+    const { name, guardian, localGuardian, ...remaning } = paylod
 
-    const modifiedUpdatedData: Record<string, unknown>={
+    const modifiedUpdatedData: Record<string, unknown> = {
         ...remaning
     }
 
 
-    if(name&& Object.keys(name).length){
-        for(const [key, value] of Object.entries(name)){
+    if (name && Object.keys(name).length) {
+        for (const [key, value] of Object.entries(name)) {
             modifiedUpdatedData[`name.${key}`] = value
         }
     }
-    if(guardian&& Object.keys(guardian).length){
-        for(const [key, value] of Object.entries(guardian)){
+    if (guardian && Object.keys(guardian).length) {
+        for (const [key, value] of Object.entries(guardian)) {
             modifiedUpdatedData[`guardian.${key}`] = value
         }
     }
-    if(localGuardian&& Object.keys(localGuardian).length){
-        for(const [key, value] of Object.entries(localGuardian)){
+    if (localGuardian && Object.keys(localGuardian).length) {
+        for (const [key, value] of Object.entries(localGuardian)) {
             modifiedUpdatedData[`localGuardian.${key}`] = value
         }
     }
@@ -97,9 +96,9 @@ const updateStudentFromDB = async (id: string, paylod: Partial<TStudent>) => {
     const updateStudent = await Student.findOneAndUpdate(
         { id },
         modifiedUpdatedData,
-        { new: true , runValidators: true}
+        { new: true, runValidators: true }
     )
-    
+
     return updateStudent
 
 }

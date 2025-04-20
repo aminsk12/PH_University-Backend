@@ -17,7 +17,22 @@ const createStudent = catchAsync(async (req, res) => {
 }
 )
 
+const createFaculty = catchAsync(async (req, res) => {
+
+    const { password, faculty } = req.body;
+
+    const result = await UserServices.createFacultyIntuDB(password, faculty)
+   // console.log(result);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Faculty created succesfuly",
+        data: result
+    })
+}
+)
 
 export const UserController = {
-    createStudent
+    createStudent,
+    createFaculty
 }
