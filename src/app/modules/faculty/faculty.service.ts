@@ -1,12 +1,23 @@
+import { Faculty } from "./faculty.model"
 
 
 
-// const getFacultyFrom = async(id:string)=>{
+const getAllFacultyFrom = async () => {
 
-// }
+    const result = await Faculty.find()
+    return result
+
+}
+const getSingleFacultyFrom = async (id:string) => {
+
+    const result = await Faculty.findById(id)
+    return result
+
+}
 
 
 
-// export const FacultyService={
-//     getFacultyFrom
-// }
+export const FacultyService = {
+    getAllFacultyFrom,
+    getSingleFacultyFrom
+}
