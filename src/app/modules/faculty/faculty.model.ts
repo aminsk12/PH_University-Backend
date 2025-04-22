@@ -49,13 +49,27 @@ const facultySchema = new Schema<TFaculty>({
         type: String,
         optional: true
     },
-    address: {
+    presentAddress: {
+        type: String,
+        requird: true
+    },
+    permanentAddress: {
         type: String,
         requird: true
     },
     profileImage: {
         type: String,
         optional: true
+    },
+    academicDepartment: {
+        type: Schema.Types.ObjectId,
+        optional: true,
+        ref: "AcademicDepartment"
+    },
+    academicFaculty: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: "AcademicFaculty"
     },
     isDeleted: {
         type: Boolean,

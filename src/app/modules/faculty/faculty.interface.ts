@@ -16,8 +16,11 @@ export type TFaculty = {
     dateOfBirth: string;
     contactNo: string;
     emergencyContactNo?: string;
-    address: string;
+    presentAddress: string;
+    permanentAddress: string;
     profileImage: string;
+    academicFaculty: Types.ObjectId;
+    academicDepartment: Types.ObjectId;
     isDeleted: boolean;
     createdAt: Date;
     updatedAt: Date;
