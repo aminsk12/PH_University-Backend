@@ -5,7 +5,7 @@ import { TStudent } from "../sudent/student.interface"
 import Student from "../sudent/student.modal"
 import { TUser } from "./user.interface"
 import { User } from "./user.model"
-import generateStudentId from "./user.ultis"
+import generateStudentId, { UserUltis } from "./user.ultis"
 import AppError from "../../errors/AppError"
 import mongoose from "mongoose"
 import { TFaculty } from "../faculty/faculty.interface"
@@ -72,12 +72,16 @@ const createStudenIntoDB = async (password: string, studentData: TStudent) => {
 
 const createFacultyIntuDB = async (password: string, facultyData: TFaculty) => {
 
+
     const userData: Partial<TUser> = {}
+    const facultyId = await UserUltis.generateFacultyId();
+
+
 
     userData.password = password || (config.default_pass as string);
     userData.role = "faculty"
     userData.email = facultyData.email;
-    userData.id = 'F-0001'
+    userData.id = facultyId
 
     const newUser = await User.create(userData);
     if (Object.keys(newUser).length) {

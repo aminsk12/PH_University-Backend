@@ -19,15 +19,15 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
     if (err instanceof ZodError) {
         const simplifiedError = handelZodError(err)
-        statusCode = simplifiedError.statusCode;
-        message = simplifiedError.message;
-        errorSorce = simplifiedError.errorSorce;
+        statusCode = simplifiedError?.statusCode;
+        message = simplifiedError?.message;
+        errorSorce = simplifiedError?.errorSorce;
 
     } else if(err?.name === 'ValidatorError') {
         const simplifiedError = handelValidationError(err)
-        statusCode = simplifiedError.statusCode;
-        message = simplifiedError.message;
-        errorSorce = simplifiedError.errorSorce;
+        statusCode = simplifiedError?.statusCode;
+        message = simplifiedError?.message;
+        errorSorce = simplifiedError?.errorSorce;
     }
 
 

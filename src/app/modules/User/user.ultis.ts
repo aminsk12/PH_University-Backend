@@ -1,7 +1,7 @@
 import { TAcademicSemister } from "../academicSemister/academicSemister.interface";
 import { User } from "./user.model";
 
- 
+
 
 const findLastStudentId = async () => {
     const lastStudent = await User.findOne(
@@ -50,6 +50,50 @@ const generateStudentId = async (paylod: TAcademicSemister) => {
 
 
 export default generateStudentId
+
+
+
+
+
+
+const findLastFacultyId = async () => {
+    const lastFaculty = await User.findOne(
+        {
+            role: "faculty"
+        },
+        {
+            id: 1,
+            _id: 0
+        }
+    )
+        .sort({ createdAt: -1 })
+        .lean();
+
+    return lastFaculty?.id ? lastFaculty.id : undefined;
+}
+
+const generateFacultyId = async () => {
+    const lastFacultyId = await findLastFacultyId();
+    let currentIdNumber = 0; // Default starting number
+
+    if (lastFacultyId) {
+        // Extract the numeric part after "F-"
+        const idParts = lastFacultyId.split('-');
+        if (idParts.length === 2) {
+            currentIdNumber = parseInt(idParts[1]) || 0;
+        }
+    }
+
+    // Increment and format the ID
+    const nextIdNumber = currentIdNumber + 1;
+    const formattedId = `F-${nextIdNumber.toString().padStart(4, '0')}`;
+
+    return formattedId;
+}
+
+export const UserUltis = {
+    generateFacultyId
+}
 
 
 
