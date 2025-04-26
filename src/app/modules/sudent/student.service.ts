@@ -32,8 +32,8 @@ const deleteStudentFromDB = async (id: string) => {
     const session = await mongoose.startSession()
     try {
         session.startTransaction()
-        const deleteStudent = await Student.findOneAndUpdate(
-            { id },
+        const deleteStudent = await Student.findByIdAndUpdate(
+            id ,
             { isDeleted: true },
             { new: true, session }
         )
@@ -41,8 +41,10 @@ const deleteStudentFromDB = async (id: string) => {
             throw new AppError(400, 'Failed to delete student')
         }
 
+        const userId = deleteStudent.user;
+
         const deleteUser = await User.findOneAndUpdate(
-            { id },
+            userId,
             { isDeleted: true },
             { new: true, session }
         )
@@ -93,8 +95,8 @@ const updateStudentFromDB = async (id: string, paylod: Partial<TStudent>) => {
         }
     }
 
-    const updateStudent = await Student.findOneAndUpdate(
-        { id },
+    const updateStudent = await Student.findByIdAndUpdate(
+        id ,
         modifiedUpdatedData,
         { new: true, runValidators: true }
     )
