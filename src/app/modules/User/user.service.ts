@@ -58,12 +58,12 @@ const createStudenIntoDB = async (password: string, studentData: TStudent) => {
         return newStudent
 
     } catch (err) {
-        // rollback the transaction in case of error
         await session.abortTransaction();
         session.endSession();
-        // handle the error
         if (err instanceof mongoose.Error) {
             throw new AppError(400, 'Database error: ' + err.message)
+        } else {
+            throw new AppError(500, 'Something went wrong: ' + (err as Error).message)
         }
     }
 
@@ -87,34 +87,37 @@ const createFacultyIntuDB = async (password: string, facultyData: TFaculty) => {
         userData.id = facultyId
 
         const newUser = await User.create([userData], { session });
+       console.log(userData);
         if (!newUser.length) {
             throw new AppError(400, 'Faild to create user')
         }
+        //set id ,_id as user
+        facultyData.id = newUser[0].id;
+        facultyData.user = newUser[0]._id
         //create a faculty
-        if (newUser.length) {
 
-            facultyData.id = newUser[0].id;
-            facultyData.user = newUser[0]._id
 
-            const newFaculty = await Faculty.create([facultyData], { session });
-            if (!newFaculty.length) {
-                throw new AppError(400, 'Faild to create faculty')
-            }
-            return newFaculty
+
+        const newFaculty = await Faculty.create([facultyData], { session });
+        console.log(newFaculty);
+        if (!newFaculty.length) {
+            throw new AppError(400, 'Faild to create faculty')
         }
+        
+
         // commit the transaction
         await session.commitTransaction();
         session.endSession();
 
-        return newUser
+        return newFaculty
 
     } catch (err) {
-        // rollback the transaction in case of error
         await session.abortTransaction();
         session.endSession();
-        // handle the error
         if (err instanceof mongoose.Error) {
             throw new AppError(400, 'Database error: ' + err.message)
+        } else {
+            throw new AppError(500, 'Something went wrong: ' + (err as Error).message)
         }
     }
 

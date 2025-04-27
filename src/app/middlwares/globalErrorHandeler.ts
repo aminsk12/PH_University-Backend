@@ -6,6 +6,8 @@ import { ZodError } from 'zod';
 import { TErrorSources } from '../interface/error';
 import handelZodError from '../errors/handelZodError';
 import handelValidationError from '../errors/handelValidationError';
+import handelCastError from '../errors/handelCastError';
+
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
@@ -22,21 +24,25 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         statusCode = simplifiedError?.statusCode;
         message = simplifiedError?.message;
         errorSorce = simplifiedError?.errorSorce;
-
-    } else if(err?.name === 'ValidatorError') {
+    } else if (err?.name === 'ValidationError') {
         const simplifiedError = handelValidationError(err)
         statusCode = simplifiedError?.statusCode;
         message = simplifiedError?.message;
         errorSorce = simplifiedError?.errorSorce;
     }
-
+    else if (err?.name === 'CastError') {
+        const simplifiedError = handelCastError(err)
+        statusCode = simplifiedError?.statusCode;
+        message = simplifiedError?.message;
+        errorSorce = simplifiedError?.errorSorce;
+    }
 
     ///ultimate error handler
     res.status(statusCode).json({
         success: false,
         message,
         errorSorce,
-        //error: err,
+        //err,
         stack: config.NODE_ENV === 'devlopment' ? err.stack : null,
     });
 };
