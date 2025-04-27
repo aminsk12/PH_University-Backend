@@ -5,7 +5,8 @@ import catchAsync from "../../utils/catctAsync";
 
 
 const getAllStudent = catchAsync(async (req, res) => {
-  const data = await StudentServices.getAllStudentFromDB()
+  const data = await StudentServices.getAllStudentFromDB(req.query)
+  console.log(req.query)
   sendResponse(res, {
     statusCode: 200,
     success: true,

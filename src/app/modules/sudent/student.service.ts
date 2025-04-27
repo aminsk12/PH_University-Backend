@@ -4,8 +4,22 @@ import AppError from "../../errors/AppError"
 import { User } from "../User/user.model"
 import { TStudent } from "./student.interface"
 
-const getAllStudentFromDB = async () => {
-    const result = await Student.find().populate('admissionSemester').populate({
+const getAllStudentFromDB = async (query: Record<string, unknown>) => {
+
+    let searchTerm = '';
+    if (query?.searchTerm) (
+        searchTerm = query?.searchTerm as string
+    )
+
+    const searchableFields = ['email', 'name.firstName', 'name.middleName', 'name.lastName']
+
+    const result = await Student.find({
+        $or: searchableFields.map((field) => ({
+            [field]: { $regex: searchTerm, $options: 'i' }
+
+        }))
+
+    }).populate('admissionSemester').populate({
         path: 'academicDepartment',
         populate: {
             path: 'academicFaculty'
@@ -33,7 +47,7 @@ const deleteStudentFromDB = async (id: string) => {
     try {
         session.startTransaction()
         const deleteStudent = await Student.findByIdAndUpdate(
-            id ,
+            id,
             { isDeleted: true },
             { new: true, session }
         )
@@ -96,7 +110,7 @@ const updateStudentFromDB = async (id: string, paylod: Partial<TStudent>) => {
     }
 
     const updateStudent = await Student.findByIdAndUpdate(
-        id ,
+        id,
         modifiedUpdatedData,
         { new: true, runValidators: true }
     )
