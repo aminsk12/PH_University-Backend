@@ -1,8 +1,8 @@
 import { model, Schema } from "mongoose";
-import { TCourse, TPreRequisiteCourse } from "./course.interface";
+import { TCourse, TPreRequisiteCourses } from "./course.interface";
 
 
-const preRequisiteCourseSchema = new Schema<TPreRequisiteCourse>({
+const preRequisiteCourseSchema = new Schema<TPreRequisiteCourses>({
     course: {
         type: Schema.Types.ObjectId,
         ref: "Course"
