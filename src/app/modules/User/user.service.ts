@@ -126,7 +126,63 @@ const createFacultyIntuDB = async (password: string, facultyData: TFaculty) => {
 }
 
 
+const createAdminIntuDB = async (password: string, adminData: TAdmin) => {
+
+    const session = await mongoose.startSession();
+
+    try {
+        session.startTransaction()
+        const userData: Partial<TUser> = {}
+        const adminId = await UserUltis.generateAdminId();
+
+
+
+        userData.password = password || (config.default_pass as string);
+        userData.role = "admin"
+        userData.email = adminData.email;
+        userData.id = adminId
+
+        const newUser = await User.create([userData], { session });
+       console.log(userData);
+        if (!newUser.length) {
+            throw new AppError(400, 'Faild to create user')
+        }
+        //set id ,_id as user
+        adminData.id = newUser[0].id;
+        adminData.user = newUser[0]._id
+        //create a faculty
+
+
+
+        const newAdmin = await Faculty.create([adminData], { session });
+        // console.log(newFaculty);
+        if (!newAdmin.length) {
+            throw new AppError(400, 'Faild to create Admin')
+        }
+        
+
+        // commit the transaction
+        await session.commitTransaction();
+        session.endSession();
+
+        return newAdmin
+
+    } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
+        if (err instanceof mongoose.Error) {
+            throw new AppError(400, 'Database error: ' + err.message)
+        } else {
+            throw new AppError(500, 'Something went wrong: ' + (err as Error).message)
+        }
+    }
+
+
+
+}
+
 export const UserServices = {
+    createAdminIntuDB,
     createStudenIntoDB,
     createFacultyIntuDB
 }

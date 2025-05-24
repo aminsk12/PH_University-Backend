@@ -17,7 +17,7 @@ const getSingleCourseFromDB = async (id: string) => {
 const deletCourseFromDB = async (id: string) => {
     const result = await Course.findByIdAndUpdate(
         id,
-        { isDeleted: true },
+        { isDeleted: false },
         { new: true }
     );
     return result

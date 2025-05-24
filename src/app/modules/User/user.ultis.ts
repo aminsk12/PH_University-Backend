@@ -91,7 +91,47 @@ const generateFacultyId = async () => {
     return formattedId;
 }
 
+
+
+
+
+const findLastAdminId = async () => {
+    const lastFaculty = await User.findOne(
+        {
+            role: "admin"
+        },
+        {
+            id: 1,
+            _id: 0
+        }
+    )
+        .sort({ createdAt: -1 })
+        .lean();
+
+    return lastFaculty?.id ? lastFaculty.id : undefined;
+}
+
+const generateAdminId = async () => {
+    const lastAdminId = await findLastAdminId();
+    let currentIdNumber = 0; // Default starting number
+
+    if (lastAdminId) {
+        // Extract the numeric part after "F-"
+        const idParts = lastAdminId.split('-');
+        if (idParts.length === 2) {
+            currentIdNumber = parseInt(idParts[1]) || 0;
+        }
+    }
+
+    // Increment and format the ID
+    const nextIdNumber = currentIdNumber + 1;
+    const formattedId = `A-${nextIdNumber.toString().padStart(4, '0')}`;
+
+    return formattedId;
+}
+
 export const UserUltis = {
+    generateAdminId,
     generateFacultyId
 }
 
