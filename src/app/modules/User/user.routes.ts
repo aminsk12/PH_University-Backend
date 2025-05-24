@@ -3,6 +3,7 @@ import { UserController } from "./user.controller";
 import { studentValidations } from "../sudent/student.validation";
 import validateRequest from "../../middlwares/validateRequest";
 import { facultyValidations } from "../faculty/faculty.validation";
+import { adminValidations } from "../Admin/admin.validation";
 
 
 const router = Router();
@@ -18,5 +19,9 @@ router.post('/create-faculty',
     UserController.createFaculty
 )
 
+router.post('/create-admin',
+    validateRequest(adminValidations.createAdminValidationSchema),
+    UserController.createAdmin
+)
 
 export const UserRoutes = router

@@ -10,6 +10,8 @@ import AppError from "../../errors/AppError"
 import mongoose from "mongoose"
 import { TFaculty } from "../faculty/faculty.interface"
 import { Faculty } from "../faculty/faculty.model"
+import { TAdmin } from "../Admin/admin.interface"
+import { Admin } from "../Admin/admin.model"
 
 
 const createStudenIntoDB = async (password: string, studentData: TStudent) => {
@@ -154,7 +156,7 @@ const createAdminIntuDB = async (password: string, adminData: TAdmin) => {
 
 
 
-        const newAdmin = await Faculty.create([adminData], { session });
+        const newAdmin = await Admin.create([adminData], { session });
         // console.log(newFaculty);
         if (!newAdmin.length) {
             throw new AppError(400, 'Faild to create Admin')
@@ -176,9 +178,6 @@ const createAdminIntuDB = async (password: string, adminData: TAdmin) => {
             throw new AppError(500, 'Something went wrong: ' + (err as Error).message)
         }
     }
-
-
-
 }
 
 export const UserServices = {

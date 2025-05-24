@@ -13,7 +13,6 @@ export type TAdmin = {
     user: Types.ObjectId;
     name: TAdminName;
     gender: "male" | "female"|"other";
-    dateOfBirth: string;
     contactNo: string;
     emergencyContactNo?: string;
     profileImage: string;
