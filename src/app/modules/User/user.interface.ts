@@ -1,3 +1,4 @@
+import { userRole } from "./user.conostance";
 
 
 export type TUser = {
@@ -10,3 +11,5 @@ export type TUser = {
     isDeleted: boolean
 
 }
+
+export type TUserRole = typeof userRole[keyof typeof userRole];

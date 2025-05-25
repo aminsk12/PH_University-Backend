@@ -1,11 +1,13 @@
 import { Router } from "express";
 import { FacultyController } from "./faculty.controller";
+import auth from "../../middlwares/auth";
+import { userRole } from "../User/user.conostance";
 
 
 
 const router = Router()
 
-router.get('/', FacultyController.getAllFaculty)
+router.get('/', auth(userRole.faculty, userRole.admin), FacultyController.getAllFaculty)
 router.get('/:facultyId', FacultyController.getSingleFaculty)
 
 
