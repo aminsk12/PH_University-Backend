@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { AdminController } from "./admin.controller";
+import auth from "../../middlwares/auth";
+import { userRole } from "../User/user.conostance";
 
 
 
@@ -7,8 +9,8 @@ import { AdminController } from "./admin.controller";
 
 const router = Router()
 
-router.get('/', AdminController.getAllAdmin)
-router.get('/:adminId', AdminController.getSingleAdmin)
+router.get('/',auth(userRole.admin), AdminController.getAllAdmin)
+router.get('/:adminId',auth(userRole.admin), AdminController.getSingleAdmin)
 
 
 export const adminRoute = router;
